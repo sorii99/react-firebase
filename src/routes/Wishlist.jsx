@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { AppContext } from '../App';
 import { addNew, deleteWish, getWish, updateWish } from '../firebase/controller';
 
 const list = {
@@ -13,6 +14,7 @@ export const Wishlist = () => {
     const [list, setList] = useState({ title: '', description: '' });
     const [wishlist, setWishlist] = useState([]);
     const [mode, setMode] = useState('add');
+    const { user } = useContext(AppContext);
 
     const createNewWish = async () => {
         await addNew(list);
@@ -53,34 +55,30 @@ export const Wishlist = () => {
             <div className='flex flex-col gap-4'>
                 <h2 className='font-semibold px-1'>Make a wish:</h2>
                 <input
-                    className='border shadow outline-none focus:ring ring-sky-200 rounded px-2 py-1'
+                    className='border shadow outline-none focus:ring ring-sky-200 rounded px-2 py-1 disabled:cursor-not-allowed'
                     type='text'
                     placeholder='Product'
                     value={list.title}
+                    disabled={!user}
                     onChange={(e) => setList({ ...list, title: e.target.value })}
                 />
 
                 <textarea
-                    className='border shadow outline-none focus:ring ring-sky-200 rounded px-2 py-1'
+                    className='border shadow outline-none focus:ring ring-sky-200 rounded px-2 py-1 disabled:cursor-not-allowed'
                     type='text'
                     rows={3}
                     placeholder='Why you need it?'
                     value={list.description}
+                    disabled={!user}
                     onChange={(e) => setList({ ...list, description: e.target.value })}
                 />
 
                 <button
-                    className='bg-sky-400 text-white rounded shadow py-2 hover:bg-sky-500 transition font-semibold'
+                    className='bg-sky-400 text-white rounded shadow py-2 hover:bg-sky-500 transition font-semibold disabled:bg-gray-200'
+                    disabled={!user}
                     onClick={() => mode === 'add' ? createNewWish() : updateAWish()}
                 >
                     {mode === 'add' ? 'Add' : 'Update'}
-                </button>
-
-                <button
-                    className='bg-sky-400 text-white rounded shadow py-2 hover:bg-sky-500 transition font-semibold'
-                    onClick={getWish}
-                >
-                    Obtain
                 </button>
 
                 <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
@@ -108,6 +106,13 @@ export const Wishlist = () => {
                     ))}
                 </div>
             </div>
+            {
+                !user
+                &&
+                <p className='text-lg font-semibold text-red-600'>
+                    Login required to access this feature!
+                </p>
+            }
         </div>
     )
 }

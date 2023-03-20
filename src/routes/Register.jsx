@@ -52,7 +52,7 @@ export const Register = () => {
                     onChange={(e) => setPassword(e.target.value)}
                 />
 
-                <button type='button' className='bg-sky-400 py-1 text-white rounded shadow'>
+                <button className='bg-sky-400 py-1 text-white rounded shadow'>
                     Registrar
                 </button>
             </form>

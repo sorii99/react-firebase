@@ -10,7 +10,7 @@ export const Login = () => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const { setUser } = useContext(AppContext);
+    const { setUser, setRoute } = useContext(AppContext);
 
     const handleGoogleLogin = () => {
         signInWithPopup(auth, provider)
@@ -20,6 +20,7 @@ export const Login = () => {
                 const user = result.user;
                 toast('Inicio de sesion valido');
                 setUser(user);
+                setRoute('home');
             }).catch((error) => {
                 const errorCode = error.code;
                 const errorMessage = error.message;
@@ -35,6 +36,7 @@ export const Login = () => {
                 const user = userCredential.user;
                 toast('Inicio de sesion valido');
                 setUser(user);
+                setRoute('home');
             })
             .catch((error) => {
                 const errorCode = error.code;
@@ -62,10 +64,10 @@ export const Login = () => {
                         onChange={(e) => setPassword(e.target.value)}
                     />
 
-                    <button type='button' className='bg-sky-400 py-1 text-white rounded shadow hover:bg-sky-500 transition'>
+                    <button className='bg-sky-400 py-1 text-white rounded shadow hover:bg-sky-500 transition'>
                         Ingresar
                     </button>
-                    <button type='button' className='bg-sky-400 py-1 text-white rounded shadow hover:bg-sky-500 transition' onClick={handleGoogleLogin}>
+                    <button className='bg-sky-400 py-1 text-white rounded shadow hover:bg-sky-500 transition' onClick={handleGoogleLogin}>
                         Ingresar con Google
                     </button>
                 </form>
